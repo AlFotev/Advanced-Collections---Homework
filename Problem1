@@ -1,0 +1,51 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AdvancedCollectionsProblem1
+{
+    public class solutionOfProblem1
+    {
+        public static void Main()
+        {
+            var input = Console.ReadLine().Split(' ');
+            var allShells = new Dictionary<string, HashSet<int>>();
+            var region = input[0];
+            var sizeOfShell = input[input.Length - 1];
+
+            while (region != "Aggregate")
+            {
+                 sizeOfShell = input[input.Length - 1];
+                if (!allShells.ContainsKey(region))
+                {
+                    allShells.Add(region, new HashSet<int>());
+                }
+                allShells[region].Add(int.Parse(sizeOfShell));
+
+                 input = Console.ReadLine().Split(' ');
+          
+                 region = input[0];
+                
+            }
+
+           
+            foreach (var regionAndShells in allShells)
+            {
+                var giantShell = 0;
+                var sum = 0;
+                var theRegion = regionAndShells.Key;
+                var theShells = regionAndShells.Value;
+                foreach (var num in theShells)
+                {
+                    sum += num;
+                }
+                giantShell = sum - (sum / theShells.Count);
+                Console.WriteLine($"{theRegion} -> {string.Join(", ", theShells)} ({giantShell})");
+            }
+
+        }
+        
+    }
+}
