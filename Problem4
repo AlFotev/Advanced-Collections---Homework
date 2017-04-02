@@ -1,0 +1,81 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AdvancedCollectionsProblem4
+{
+    public class Problem4
+    {
+        static void Main()
+        {
+            var input = Console.ReadLine().Split(' ').ToList();
+            var command = input[0];
+            var dateBase = new Dictionary <
+                string ,
+                Dictionary<string , string>
+                >();
+            while (command != "drop")
+            {
+                //komandata e post i sazdavam nov kliuch sas saotvetniq post i rechnik
+                var post = input[1];
+                if (command == "post")
+                {
+                  
+                    if (!dateBase.ContainsKey(post))
+                    {
+                       dateBase[post] = new Dictionary<string, string>();
+
+                    }
+                    dateBase[post]["Likes"] = "0";
+                    dateBase[post]["Dislikes"] = "0";
+                    dateBase[post]["Comments"] = "None\r\n";
+                }
+                else if (command == "like")
+                {
+                   var likes = int.Parse(dateBase[post]["Likes"]);
+                    likes++;
+                    dateBase[post]["Likes"] = likes.ToString();
+                }
+                else if (command == "dislike")
+                {
+                    var dislikes = int.Parse(dateBase[post]["Dislikes"]);
+                    dislikes++;
+                    dateBase[post]["Dislikes"] = dislikes.ToString();
+                }
+                else if (command == "comment")
+                {
+                    var name = input[2];
+                    var comment = "";
+                    for (int j = 3; j < input.Count; j++)
+                    {
+                        if (j == input.Count - 1)
+                        {
+                            comment += input[j];
+                        }
+                        else
+                        {
+                            comment += input[j] + " ";
+                        }
+                    }
+            
+                    if (dateBase[post]["Comments"] == "None\r\n")
+                    {
+                        dateBase[post]["Comments"] = "";
+                    }
+                    dateBase[post]["Comments"] = dateBase[post]["Comments"] + $"*  {name}: {comment}\r\n";
+                }
+
+                input = Console.ReadLine().Split(' ').ToList();           
+                 command = input[0];
+            }
+
+            foreach (var post in dateBase.Keys)
+            {
+                var details = dateBase[post];
+                Console.Write($"Post: {post} | Likes: {dateBase[post]["Likes"]} | Dislikes: {dateBase[post]["Dislikes"]}\r\nComments:\r\n{dateBase[post]["Comments"]}");
+            }
+        }
+    }
+}
