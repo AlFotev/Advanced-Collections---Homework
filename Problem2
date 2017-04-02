@@ -1,0 +1,103 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AdvanedColectionsProblem2
+{
+    public class Problem2
+    {
+        static void Main(string[] args)
+        {
+            ///prepare the input - two arrays : first - the key and second - the values
+            string[] input;
+            string person;
+            List<string> newValues;
+            InputChew(out input, out person, out newValues);
+
+            ///
+
+            var personAndValues = new Dictionary<string, List<string>>();
+
+            while (person != "end")
+            {
+                int check;
+                if (!personAndValues.ContainsKey(person))
+                {
+                    personAndValues[person] = new List<string>();
+                    if (personAndValues.ContainsKey(newValues[0]))
+                    {
+                        personAndValues[person] = new List<string>(personAndValues[newValues[0]]);
+                    }
+                   
+                    else if (!int.TryParse(newValues[0] , out check))
+                    {
+                        personAndValues.Remove(person);
+                    }
+                    else
+                    {
+                        foreach (var item in newValues)
+                        {
+                            personAndValues[person].Add(item);
+                        }
+                    }
+                   
+                  
+                }
+                else
+                {
+                    if (personAndValues.ContainsKey(newValues[0]))
+                    {
+                        personAndValues[person].Clear();
+                        personAndValues[person] = new List<string>(personAndValues[newValues[0]]);
+                    }
+                    else
+	                {
+                        foreach (var item in newValues)
+                        {
+                            personAndValues[person].Add(item);
+                        }
+                    }
+                }
+       
+               
+
+                InputChew(out input, out person, out newValues);
+            }
+
+            //print
+
+            foreach (var names in personAndValues.Keys)
+            {
+                Console.WriteLine($"{names} === {string.Join(", ", personAndValues[names])}");
+            }
+
+        }
+
+        private static void InputChew(out string[] input, out string person, out List<string> newValues)
+        {
+            input = Console.ReadLine().Split(new string[] { " -> " }, StringSplitOptions.None);
+            person = input[0];
+            var valuesOfPerson = "";
+            if (person != "end")
+            {
+                valuesOfPerson = input[1];
+            }
+            else
+            {
+                valuesOfPerson = "0 , 0";
+            }
+           
+            var valuesOfPersonArray = valuesOfPerson.Split(',').ToList();
+            newValues = new List<string>();
+            for (var i = 0; i < valuesOfPersonArray.Count; i++)
+            {
+
+                    newValues.Add(valuesOfPersonArray[i].Trim());
+                }
+                 
+            }
+        }
+    }
+
