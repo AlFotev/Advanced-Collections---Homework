@@ -1,0 +1,87 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AdvancedCollectionsProblem3
+{
+   public  class Problem3
+    {
+        static void Main()
+        {
+            string[] input;
+            string topic;
+            HashSet<string> newValues;
+            InputChew(out input, out topic, out newValues);
+
+            ///
+
+            var topicsAndTags = new Dictionary<string, HashSet<string>>();
+
+            while (topic != "filter")
+            {
+                if (!topicsAndTags.ContainsKey(topic))
+                {
+                    topicsAndTags[topic] = new HashSet<string>();
+
+                    foreach (var tag in newValues)
+                    {
+                        topicsAndTags[topic].Add($"#{tag}");
+                    }
+
+                }
+                else
+                {
+                    foreach (var tag in newValues)
+                    {
+                        topicsAndTags[topic].Add($"#{tag}");
+                    }
+                }
+                        
+
+                InputChew(out input, out topic, out newValues);
+            }
+            var filterWords = Console.ReadLine().Split(new string[] {", "} , StringSplitOptions.None).ToList();
+           
+
+            foreach (var headLine in topicsAndTags.Keys)
+            {
+                var headLineTags = topicsAndTags[headLine];
+                var counter = 0;
+                for (int i = 0; i < filterWords.Count; i++)
+                {
+                    var word = filterWords[i];
+                    if (headLineTags.Contains($"#{word}"))
+                    {
+                        counter++;
+                        if (counter == filterWords.Count)
+                        {
+                            Console.WriteLine($"{headLine} | {string.Join(", ", headLineTags)}");
+                            counter = 0;
+                            break;
+                        }
+                       
+                    }
+
+                }
+            }
+           
+        }
+
+        private static void InputChew(out string[] input, out string topic, out HashSet<string> newValues)
+        {
+            input = Console.ReadLine().Split(new string[] { " -> " }, StringSplitOptions.None);
+            topic = input[0];
+            var tags = input[input.Length - 1];
+            var tagsArray = tags.Split(',').ToList();
+            newValues = new HashSet<string>();
+            for (var i = 0; i < tagsArray.Count; i++)
+            {
+                newValues.Add(tagsArray[i].Trim());
+            }
+
+        }
+    }
+    }
+
